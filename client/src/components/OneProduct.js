@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Axios from 'axios'
+import { navigate } from '@reach/router';
 
 const OneProduct = (props) => {
     const [product, setProduct] = useState({
@@ -9,7 +10,7 @@ const OneProduct = (props) => {
     })
 
     useEffect(() => {
-        Axios.get(`http://localhost:8000/api/product/${props.id}`)
+        Axios.get(`http://localhost:8000/api/products/${props.id}`)
         .then(res => {
             if(res.data.message === "success"){
                 setProduct(res.data.results)
@@ -18,6 +19,13 @@ const OneProduct = (props) => {
             .catch(err => console.log("failed", err))
     }, []);
 
+    const deleteProduct = (id) => {
+        Axios.post(`http://localhost:8000/api/products/${id}`)
+        .then(res => {
+            navigate("/")
+        })
+
+    }
 
 
 
@@ -30,6 +38,9 @@ const OneProduct = (props) => {
                 </li>
                 <li>
                     <p>{product.description}</p>
+                </li>
+                <li>
+                    <button onClick={ e => deleteProduct(product._id) }>Delete Product</button>
                 </li>
             </ul>
         </div>

@@ -9,17 +9,29 @@ module.exports.createProduct = (req, res) => {
         description
     })
     .then(data => res.json({message: "success", results: data}))
-    .catch(err => res.json(err))
+    .catch(err => res.json({message:"error", results: err}))
 }
 
 module.exports.allProducts = (req, res) => {
     Product.find({})
         .then(data => res.json({message: "success", results: data}))
-        .catch(err => res.json({message:"error", result:err}))
+        .catch(err => res.json({message:"error", results:err}))
 }
 
 module.exports.OneProduct = (req, res) => {
     Product.findOne({ _id: req.params.id})
     .then(data => res.json({message:"success", results:data}))
-    .catch(err => res.json({message: "success", results: err}))
+    .catch(err => res.json({message: "error", results: err}))
+}
+
+module.exports.deleteProduct= (req, res) => {
+    Product.findOneAndDelete( {_id: req.params.id})
+    .then(data => res.json({message: "success", results:data}))
+    .catch(err => res.json({message:"error", results: err}))
+}
+
+module.exports.updateProduct = (req, res) => {
+    Product.findOneAndUpdate({ _id: req.params.id})
+    .then(data => res.json({message:"success", results: data}))
+    .catch(err => ({message:"error", results: err}))
 }

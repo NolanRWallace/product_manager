@@ -4,7 +4,7 @@ import Form from './Form'
 import { Link } from '@reach/router'
 
 
-const AllProducts = () => {
+const AllProducts = (props) => {
     const [allProducts, setAllProducts] = useState([])
     const [product, setProduct] = useState({
         title: "",
@@ -35,22 +35,57 @@ const AllProducts = () => {
                     price: "",
                     description: ""
                 })
+                getAllProducts()
             }
-    })
-}
+        })
+    }
+
+
+    const deleteProduct = (id) => {
+        Axios.post(`http://localhost:8000/api/products/${id}`)
+        .then(res => {
+            getAllProducts()
+        })
+
+    }
+
 
     return (
         <div>
             <Form data={product} setData={setProduct} submitData={submitData} />
             <br/>
             <h1>All Products</h1>
-            <ul>
+            <div style={{textAlign: "Center"}}>
+            <table style={{textAlign: "Center", margin: "auto"}}>
+                <thead>
+                    <tr>
+                    <td>Product</td>
+                    <td>Price</td>
+                    <td>Description</td>
+                    <td>Actions</td>
+                    </tr>
+                </thead>
+                <tbody>
                 {
                     allProducts.map((prod, i) => 
-                    <Link to={`product/${prod._id}`} ><h4 key={i}>{prod.title}</h4></Link>
+                    <tr key={i}>
+                    <td>
+                        <Link to={`product/${prod._id}`}><h4 key={i}>{prod.title}</h4></Link>
+                    </td>
+                        <p>${prod.price}</p>
+                    <td>
+                        <p>{prod.description}</p>
+                    </td>
+                    <td>
+                        <Link to={`product/edit/${prod._id}`}><button>Edit Product</button></Link>
+                        <button onClick={ e => deleteProduct(prod._id)}>Delete Product</button>
+                    </td>
+                    </tr>
                     )
                 }
-            </ul>
+                </tbody>
+                </table>
+                </div>
         </div>
     )
 }
