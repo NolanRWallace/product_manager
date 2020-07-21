@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Axios from 'axios'
 import { navigate } from '@reach/router';
+import DeleteButton from './DeleteButton';
 
 const OneProduct = (props) => {
     const [product, setProduct] = useState({
@@ -8,6 +9,7 @@ const OneProduct = (props) => {
         price: "",
         description: ""
     })
+    const [fromOneProduct, setFromOneProduct] = useState(true)
 
     useEffect(() => {
         Axios.get(`http://localhost:8000/api/products/${props.id}`)
@@ -18,15 +20,6 @@ const OneProduct = (props) => {
         })
             .catch(err => console.log("failed", err))
     }, []);
-
-    const deleteProduct = (id) => {
-        Axios.post(`http://localhost:8000/api/products/${id}`)
-        .then(res => {
-            navigate("/")
-        })
-
-    }
-
 
 
     return (
@@ -40,7 +33,7 @@ const OneProduct = (props) => {
                     <p>{product.description}</p>
                 </li>
                 <li>
-                    <button onClick={ e => deleteProduct(product._id) }>Delete Product</button>
+                    <DeleteButton id={product._id} fromOneProduct={fromOneProduct} setFromOneProduct={setFromOneProduct} />
                 </li>
             </ul>
         </div>

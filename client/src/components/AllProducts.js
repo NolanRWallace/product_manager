@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
 import Form from './Form'
 import { Link } from '@reach/router'
+import DeleteButton from './DeleteButton'
 
 
 const AllProducts = (props) => {
@@ -41,15 +42,6 @@ const AllProducts = (props) => {
     }
 
 
-    const deleteProduct = (id) => {
-        Axios.post(`http://localhost:8000/api/products/${id}`)
-        .then(res => {
-            getAllProducts()
-        })
-
-    }
-
-
     return (
         <div>
             <Form data={product} setData={setProduct} submitData={submitData} />
@@ -77,8 +69,8 @@ const AllProducts = (props) => {
                         <p>{prod.description}</p>
                     </td>
                     <td>
-                        <Link to={`product/edit/${prod._id}`}><button>Edit Product</button></Link>
-                        <button onClick={ e => deleteProduct(prod._id)}>Delete Product</button>
+                        <Link to={`product/edit/${prod._id}`}><button >Edit Product</button></Link>
+                        <DeleteButton id={prod._id} getAllProducts={ getAllProducts } />
                     </td>
                     </tr>
                     )
