@@ -17,3 +17,9 @@ module.exports.allProducts = (req, res) => {
         .then(data => res.json({message: "success", results: data}))
         .catch(err => res.json({message:"error", result:err}))
 }
+
+module.exports.OneProduct = (req, res) => {
+    Product.findOne({ _id: req.params.id})
+    .then(data => res.json({message:"success", results:data}))
+    .catch(err => res.json({message: "success", results: err}))
+}
